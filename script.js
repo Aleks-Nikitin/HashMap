@@ -30,7 +30,7 @@ class HashMap{
     }
     remove(key){
         if(this.has(key)){
-            delete this.storage[(this.hash(key)% this.capacity)][key];
+            this.storage[(this.hash(key)% this.capacity)]= new Array();
             return true
         }
         return false
@@ -38,7 +38,7 @@ class HashMap{
     length(){
         let sum=0;
         for (const element of this.storage) {
-            if(element){
+            if(element && element !=''){
                 sum++
             }
         }
@@ -50,7 +50,7 @@ class HashMap{
     keys(){
         let sum=[];
         for (const element of this.storage) {
-            if(element){
+            if(element && element !=''){
                 sum.push((Object.keys(element)).toString());
             }
         }
@@ -59,11 +59,25 @@ class HashMap{
     values(){
         let sum =[]
         for (const element of this.storage) {
-            if(element){
+            if(element && element !=''){
                 sum.push((Object.values(element)).toString());
             }
         }
         return sum
+    }
+    entries(){
+        let entryArr =[];
+        let counter=0;
+        for (const element of this.storage) {
+            if(element && element !=''){
+                entryArr[counter]=[];
+                entryArr[counter][0]=((Object.keys(element)).toString());
+                entryArr[counter][1]=((Object.values(element)).toString());
+                counter++;
+            }
+        }
+        counter=0;
+        return entryArr;
     }
 
 }
@@ -71,7 +85,8 @@ class HashMap{
 let bob = new HashMap();
 bob.set('bob','54');
 bob.set('tom','24');
+bob.remove("tom");
 bob.set("jef", '39');
-console.log(bob.keys());
-console.log(bob.values());
+console.log(bob.length());
+console.log(bob.entries());
 //console.log(bob.storage);
