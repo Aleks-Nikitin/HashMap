@@ -1,18 +1,26 @@
 class HashMap{
     constructor(){
-        this.loadFactor = 0.75;
+        this.loadFactor = 0.6;
         this.capacity = 16;
         this.storage = new Array(16);
+    }
+    check(){
+        if(this.capacity *this.loadFactor < this.length()){
+            let arr = new Array(this.capacity);
+            this.storage = (this.storage).concat(arr);
+            this.capacity = this.capacity * 2;
+        }
     }
     hash(key){
         let hashCode = 0;
         const primeNumber = 31;
         for(let i = 0; i<key.length; i++){
-            hashCode = hashCode*primeNumber + key.charCodeAt(i)
+            hashCode = hashCode*primeNumber + key.charCodeAt(i);
         }
         return hashCode;
     }
     set(key,value){
+        this.check();
         this.storage[(this.hash(key) % this.capacity)] = {[key]:value};
 
     }
@@ -82,11 +90,4 @@ class HashMap{
 
 }
 
-let bob = new HashMap();
-bob.set('bob','54');
-bob.set('tom','24');
-bob.remove("tom");
-bob.set("jef", '39');
-console.log(bob.length());
-console.log(bob.entries());
-//console.log(bob.storage);
+
