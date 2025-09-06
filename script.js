@@ -2,14 +2,19 @@ class HashMap{
     constructor(){
         this.loadFactor = 0.6;
         this.capacity = 16;
-        this.storage = new Array(16);
+        this.storage = new Array(this.capacity);
     }
     check(){
-        if(this.capacity *this.loadFactor < this.length()){
-            let arr = new Array(this.capacity);
-            this.storage = (this.storage).concat(arr);
+            let previousEntries = this.entries();
+            this.clear();
             this.capacity = this.capacity * 2;
-        }
+            this.storage = new Array(this.capacity);
+            previousEntries.forEach(key =>{
+                this.set(key[0],key[1]);
+            });
+
+          
+        
     }
     hash(key){
         let hashCode = 0;
@@ -20,8 +25,15 @@ class HashMap{
         return hashCode;
     }
     set(key,value){
-        this.check();
-        this.storage[(this.hash(key) % this.capacity)] = {[key]:value};
+        let num = Number(this.length());
+        if(this.capacity *this.loadFactor < (num+1)) {
+            this.check();
+        }
+        let index =this.hash(key)%this.capacity;
+        if (index < 0 || index >= this.storage.length) {
+        throw new Error("Trying to access index out of bounds");
+        }
+        this.storage[index] = {[key]:value};
 
     }
     get(key){
@@ -90,4 +102,5 @@ class HashMap{
 
 }
 
+let bob = new HashMap();
 
